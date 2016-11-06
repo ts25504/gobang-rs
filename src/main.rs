@@ -23,7 +23,7 @@ impl Board {
     }
 
     fn print(&self) {
-        clear_screen();
+        //clear_screen();
         println!("Welcome to Gobang game!");
         for i in 0..16 {
             for j in 0..16 {
@@ -55,13 +55,13 @@ impl Board {
         while east || west {
             inc += 1;
 
-            if self.points[x-inc][y] == color {
+            if y >= inc && self.points[x][y-inc] == color {
                 serial_count += 1;
             } else {
                 east = false;
             }
 
-            if self.points[x+inc][y] == color {
+            if y + inc < 16 && self.points[x][y+inc] == color {
                 serial_count += 1;
             } else {
                 west = false;
@@ -81,13 +81,13 @@ impl Board {
         while north || south {
             inc += 1;
 
-            if self.points[x][y-inc] == color {
+            if x >= inc && self.points[x-inc][y] == color {
                 serial_count += 1;
             } else {
                 north = false;
             }
 
-            if self.points[x][y+inc] == color {
+            if x + inc < 16 && self.points[x+inc][y] == color {
                 serial_count += 1;
             } else {
                 south = false;
@@ -107,13 +107,13 @@ impl Board {
         while northeast || southwest {
             inc += 1;
 
-            if self.points[x+inc][y-inc] == color {
+            if x >= inc && y + inc < 16 && self.points[x-inc][y+inc] == color {
                 serial_count += 1;
             } else {
                 northeast = false;
             }
 
-            if self.points[x-inc][y+inc] == color {
+            if y >= inc && x + inc < 16 && self.points[x+inc][y-inc] == color {
                 serial_count += 1;
             } else {
                 southwest = false;
@@ -133,13 +133,13 @@ impl Board {
         while northwest || southeast {
             inc += 1;
 
-            if self.points[x-inc][y-inc] == color {
+            if x >= inc && y >= inc && self.points[x-inc][y-inc] == color {
                 serial_count += 1;
             } else {
                 northwest = false;
             }
 
-            if self.points[x+inc][y+inc] == color {
+            if x + inc < 16 && y + inc < 16 && self.points[x+inc][y+inc] == color {
                 serial_count += 1;
             } else {
                 southeast = false;
