@@ -23,7 +23,7 @@ impl Board {
     }
 
     fn print(&self) {
-        //clear_screen();
+        clear_screen();
         println!("Welcome to Gobang game!");
         for i in 0..16 {
             for j in 0..16 {
@@ -148,6 +148,10 @@ impl Board {
 
         serial_count == 5
     }
+
+    fn has_stone(&self, x: usize, y: usize)  -> bool {
+        self.points[x][y] != '*'
+    }
 }
 
 struct Game {
@@ -164,7 +168,13 @@ impl Game {
     fn start(&mut self) {
         self.board.print();
         loop {
-            let (bx, by) = self.input_coordinate();
+            let (mut bx, mut by) = self.input_coordinate();
+            while self.board.has_stone(bx, by) {
+                println!("error: this point already has a stone.");
+                let (x, y) = self.input_coordinate();
+                bx = x;
+                by = y;
+            }
             self.move_black(bx, by);
 
             if self.board.win(bx, by) {
@@ -172,7 +182,13 @@ impl Game {
                 break;
             }
 
-            let (wx, wy) = self.input_coordinate();
+            let (mut wx, mut wy) = self.input_coordinate();
+            while self.board.has_stone(wx, wy) {
+                println!("error: this point already has a stone.");
+                let (x, y) = self.input_coordinate();
+                wx = x;
+                wy = y;
+            }
             self.move_white(wx, wy);
 
             if self.board.win(wx, wy) {
@@ -183,15 +199,33 @@ impl Game {
     }
 
     fn input_coordinate(&self) -> (usize, usize) {
-        let mut x = String::new();
-        println!("Move x");
-        io::stdin().read_line(&mut x).unwrap();
-        let ux = x.trim().parse().unwrap();
+        let mut ux: usize = 0;
+        loop {
+            let mut x = String::new();
+            println!("Move row");
+            io::stdin().read_line(&mut x).unwrap();
+            match x.trim().parse::<usize>() {
+                Ok(u) => {
+                    ux = u;
+                    break;
+                },
+                Err(error) => println!("error: {}", error),
+            }
+        }
 
-        let mut y = String::new();
-        println!("Move y");
-        io::stdin().read_line(&mut y).unwrap();
-        let uy = y.trim().parse().unwrap();
+        let mut uy: usize = 0;
+        loop {
+            let mut y = String::new();
+            println!("Move column");
+            io::stdin().read_line(&mut y).unwrap();
+            match y.trim().parse::<usize>() {
+                Ok(u) => {
+                    uy = u;
+                    break;
+                },
+                Err(error) => println!("error: {}", error),
+            }
+        }
 
         (ux, uy)
     }
