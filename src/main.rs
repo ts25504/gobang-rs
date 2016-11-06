@@ -41,8 +41,112 @@ impl Board {
         self.points[x][y] = 'w';
     }
 
-    fn get_color(&self, x: usize, y: usize) -> char {
-        self.points[x][y]
+    fn win(&self, x: usize, y: usize) -> bool {
+        self.win_horizontal(x, y) || self.win_vertical(x, y) || self.win_diagonal_a(x, y) || self.win_diagonal_b(x, y)
+    }
+
+    fn win_horizontal(&self, x: usize, y: usize) -> bool {
+        let mut serial_count: i32 = 1;
+        let color: char = self.points[x][y];
+        let mut inc: usize = 0;
+
+        let mut east: bool = true;
+        let mut west: bool = true;
+        while east || west {
+            inc += 1;
+
+            if self.points[x-inc][y] == color {
+                serial_count += 1;
+            } else {
+                east = false;
+            }
+
+            if self.points[x+inc][y] == color {
+                serial_count += 1;
+            } else {
+                west = false;
+            }
+        }
+
+        serial_count == 5
+    }
+
+    fn win_vertical(&self, x: usize, y: usize) -> bool {
+        let mut serial_count: i32 = 1;
+        let color: char = self.points[x][y];
+        let mut inc: usize = 0;
+
+        let mut north: bool = true;
+        let mut south: bool = true;
+        while north || south {
+            inc += 1;
+
+            if self.points[x][y-inc] == color {
+                serial_count += 1;
+            } else {
+                north = false;
+            }
+
+            if self.points[x][y+inc] == color {
+                serial_count += 1;
+            } else {
+                south = false;
+            }
+        }
+
+        serial_count == 5
+    }
+
+    fn win_diagonal_a(&self, x: usize, y: usize) -> bool {
+        let mut serial_count: i32 = 1;
+        let color: char = self.points[x][y];
+        let mut inc: usize = 0;
+
+        let mut northeast: bool = true;
+        let mut southwest: bool = true;
+        while northeast || southwest {
+            inc += 1;
+
+            if self.points[x+inc][y-inc] == color {
+                serial_count += 1;
+            } else {
+                northeast = false;
+            }
+
+            if self.points[x-inc][y+inc] == color {
+                serial_count += 1;
+            } else {
+                southwest = false;
+            }
+        }
+
+        serial_count == 5
+    }
+
+    fn win_diagonal_b(&self, x: usize, y: usize) -> bool {
+        let mut serial_count: i32 = 1;
+        let color: char = self.points[x][y];
+        let mut inc: usize = 0;
+
+        let mut northwest: bool = true;
+        let mut southeast: bool = true;
+        while northwest || southeast {
+            inc += 1;
+
+            if self.points[x-inc][y-inc] == color {
+                serial_count += 1;
+            } else {
+                northwest = false;
+            }
+
+            if self.points[x+inc][y+inc] == color {
+                serial_count += 1;
+            } else {
+                southeast = false;
+            }
+        }
+
+        serial_count == 5
     }
 }
 
@@ -63,7 +167,7 @@ impl Game {
             let (bx, by) = self.input_coordinate();
             self.move_black(bx, by);
 
-            if self.win(bx, by) {
+            if self.board.win(bx, by) {
                 println!("Black win!");
                 break;
             }
@@ -71,7 +175,7 @@ impl Game {
             let (wx, wy) = self.input_coordinate();
             self.move_white(wx, wy);
 
-            if self.win(wx, wy) {
+            if self.board.win(wx, wy) {
                 println!("White win!");
                 break;
             }
@@ -100,115 +204,6 @@ impl Game {
     fn move_white(&mut self, x: usize, y: usize) {
         self.board.move_white(x, y);
         self.board.print();
-    }
-
-    fn win(&self, x: usize, y: usize) -> bool {
-        self.win_horizontal(x, y) || self.win_vertical(x, y) || self.win_diagonal_a(x, y) || self.win_diagonal_b(x, y)
-    }
-
-    fn win_horizontal(&self, x: usize, y: usize) -> bool {
-        let mut serial_count: i32 = 1;
-        let color: char = self.board.get_color(x, y);
-        let mut inc = 0;
-
-        let mut east: bool = true;
-        let mut west: bool = true;
-        while east || west {
-            inc += 1;
-
-            if self.board.get_color(x-inc, y) == color {
-                serial_count += 1;
-            } else {
-                east = false;
-            }
-
-            if self.board.get_color(x+inc, y) == color {
-                serial_count += 1;
-            } else {
-                west = false;
-            }
-        }
-
-        serial_count == 5
-    }
-
-    fn win_vertical(&self, x: usize, y: usize) -> bool {
-        let mut serial_count: i32 = 1;
-        let color: char = self.board.get_color(x, y);
-        let mut inc = 0;
-
-        let mut north: bool = true;
-        let mut south: bool = true;
-        while north || south {
-            inc += 1;
-
-            if self.board.get_color(x, y-inc) == color {
-                serial_count += 1;
-            } else {
-                north = false;
-            }
-
-            if self.board.get_color(x, y+inc) == color {
-                serial_count += 1;
-            } else {
-                south = false;
-            }
-        }
-
-        serial_count == 5
-    }
-
-    fn win_diagonal_a(&self, x: usize, y: usize) -> bool {
-        let mut serial_count: i32 = 1;
-        let color: char = self.board.get_color(x, y);
-        let mut inc = 0;
-
-        let mut northeast: bool = true;
-        let mut southwest: bool = true;
-        while northeast || southwest {
-            inc += 1;
-
-            if self.board.get_color(x+inc, y-inc) == color {
-                serial_count += 1;
-            } else {
-                northeast = false;
-            }
-
-            if self.board.get_color(x-inc, y+inc) == color {
-                serial_count += 1;
-            } else {
-                southwest = false;
-            }
-        }
-
-        serial_count == 5
-    }
-
-    fn win_diagonal_b(&self, x: usize, y: usize) -> bool {
-        let mut serial_count: i32 = 1;
-        let color: char = self.board.get_color(x, y);
-        let mut inc = 0;
-
-        let mut northwest: bool = true;
-        let mut southeast: bool = true;
-        while northwest || southeast {
-            inc += 1;
-
-            if self.board.get_color(x-inc, y-inc) == color {
-                serial_count += 1;
-            } else {
-                northwest = false;
-            }
-
-            if self.board.get_color(x+inc, y+inc) == color {
-                serial_count += 1;
-            } else {
-                southeast = false;
-            }
-        }
-        println!("{}", serial_count);
-
-        serial_count == 5
     }
 }
 
