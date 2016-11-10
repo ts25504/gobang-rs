@@ -3,6 +3,12 @@ extern crate text_io;
 
 use std::process::Command;
 
+const BLACK_STONE: char = 'b';
+const WHITE_STONE: char = 'w';
+const POINT: char = '*';
+const BOARD_SIZE: usize = 16;
+const WIN_SERIAL_COUNT: i32 = 5;
+
 fn clear_screen() {
     let mut child = Command::new("clear").spawn().unwrap();
     child.wait().unwrap();
@@ -15,10 +21,10 @@ struct Board {
 impl Board {
     fn new() -> Board {
         let mut board = Board { points: Vec::new() };
-        for i in 0..16 {
+        for i in 0..BOARD_SIZE {
             board.points.push(Vec::new());
-            for _ in 0..16 {
-                board.points[i].push('*');
+            for _ in 0..BOARD_SIZE {
+                board.points[i].push(POINT);
             }
         }
         board
@@ -27,8 +33,8 @@ impl Board {
     fn print(&self) {
         clear_screen();
         println!("Welcome to Gobang game!");
-        for i in 0..16 {
-            for j in 0..16 {
+        for i in 0..BOARD_SIZE {
+            for j in 0..BOARD_SIZE {
                 print!("{} ", self.points[i][j]);
             }
             print!("\n");
@@ -36,11 +42,11 @@ impl Board {
     }
 
     fn move_black(&mut self, x: usize, y: usize) {
-        self.points[x][y] = 'b';
+        self.points[x][y] = BLACK_STONE;
     }
 
     fn move_white(&mut self, x: usize, y: usize) {
-        self.points[x][y] = 'w';
+        self.points[x][y] = WHITE_STONE;
     }
 
     fn win(&self, x: usize, y: usize) -> bool {
@@ -63,14 +69,14 @@ impl Board {
                 east = false;
             }
 
-            if y + inc < 16 && self.points[x][y+inc] == color {
+            if y + inc < BOARD_SIZE && self.points[x][y+inc] == color {
                 serial_count += 1;
             } else {
                 west = false;
             }
         }
 
-        serial_count == 5
+        serial_count == WIN_SERIAL_COUNT
     }
 
     fn win_vertical(&self, x: usize, y: usize) -> bool {
@@ -89,14 +95,14 @@ impl Board {
                 north = false;
             }
 
-            if x + inc < 16 && self.points[x+inc][y] == color {
+            if x + inc < BOARD_SIZE && self.points[x+inc][y] == color {
                 serial_count += 1;
             } else {
                 south = false;
             }
         }
 
-        serial_count == 5
+        serial_count == WIN_SERIAL_COUNT
     }
 
     fn win_diagonal_a(&self, x: usize, y: usize) -> bool {
@@ -109,20 +115,20 @@ impl Board {
         while northeast || southwest {
             inc += 1;
 
-            if x >= inc && y + inc < 16 && self.points[x-inc][y+inc] == color {
+            if x >= inc && y + inc < BOARD_SIZE && self.points[x-inc][y+inc] == color {
                 serial_count += 1;
             } else {
                 northeast = false;
             }
 
-            if y >= inc && x + inc < 16 && self.points[x+inc][y-inc] == color {
+            if y >= inc && x + inc < BOARD_SIZE && self.points[x+inc][y-inc] == color {
                 serial_count += 1;
             } else {
                 southwest = false;
             }
         }
 
-        serial_count == 5
+        serial_count == WIN_SERIAL_COUNT
     }
 
     fn win_diagonal_b(&self, x: usize, y: usize) -> bool {
@@ -141,18 +147,18 @@ impl Board {
                 northwest = false;
             }
 
-            if x + inc < 16 && y + inc < 16 && self.points[x+inc][y+inc] == color {
+            if x + inc < BOARD_SIZE && y + inc < BOARD_SIZE && self.points[x+inc][y+inc] == color {
                 serial_count += 1;
             } else {
                 southeast = false;
             }
         }
 
-        serial_count == 5
+        serial_count == WIN_SERIAL_COUNT
     }
 
     fn has_stone(&self, x: usize, y: usize)  -> bool {
-        self.points[x][y] != '*'
+        self.points[x][y] != POINT
     }
 }
 
@@ -203,7 +209,7 @@ impl Game {
     fn is_coordinate_str_legal(&self, x: &String, y: &String) -> bool {
         match x.trim().parse::<usize>() {
             Ok(u) => {
-                if u >= 16 {
+                if u >= BOARD_SIZE {
                     println!("error: overflow");
                     return false
                 }
@@ -216,7 +222,7 @@ impl Game {
 
         match y.trim().parse::<usize>() {
             Ok(u) => {
-                if u >= 16 {
+                if u >= BOARD_SIZE {
                     println!("error: overflow");
                     return false
                 }
