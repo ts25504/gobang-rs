@@ -1,5 +1,7 @@
+#[macro_use]
+extern crate text_io;
+
 use std::process::Command;
-use std::io;
 
 fn clear_screen() {
     let mut child = Command::new("clear").spawn().unwrap();
@@ -198,32 +200,49 @@ impl Game {
         }
     }
 
-    fn input_coordinate(&self) -> (usize, usize) {
-        let mut ux: usize = 0;
-        loop {
-            let mut x = String::new();
-            println!("Move row");
-            io::stdin().read_line(&mut x).unwrap();
-            match x.trim().parse::<usize>() {
-                Ok(u) => {
-                    ux = u;
-                    break;
-                },
-                Err(error) => println!("error: {}", error),
-            }
+    fn is_coordinate_str_legal(&self, x: &String, y: &String) -> bool {
+        match x.trim().parse::<usize>() {
+            Ok(u) => {
+                if u >= 16 {
+                    println!("error: overflow");
+                    return false
+                }
+            },
+            Err(error) => {
+                println!("error: {}", error);
+                return false
+            },
         }
 
+        match y.trim().parse::<usize>() {
+            Ok(u) => {
+                if u >= 16 {
+                    println!("error: overflow");
+                    return false
+                }
+            },
+            Err(error) => {
+                println!("error: {}", error);
+                return false
+            },
+        }
+
+        true
+    }
+
+    fn input_coordinate(&self) -> (usize, usize) {
+        let mut ux: usize = 0;
         let mut uy: usize = 0;
         loop {
+            let mut x = String::new();
             let mut y = String::new();
-            println!("Move column");
-            io::stdin().read_line(&mut y).unwrap();
-            match y.trim().parse::<usize>() {
-                Ok(u) => {
-                    uy = u;
-                    break;
-                },
-                Err(error) => println!("error: {}", error),
+
+            println!("Move(Format: x y):");
+            scan!("{} {}", x, y);
+            if self.is_coordinate_str_legal(&x, &y) {
+                ux = x.trim().parse::<usize>().unwrap();
+                uy = y.trim().parse::<usize>().unwrap();
+                break;
             }
         }
 
