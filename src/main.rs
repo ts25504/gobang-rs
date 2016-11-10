@@ -5,7 +5,7 @@ use std::process::Command;
 
 const BLACK_STONE: char = 'b';
 const WHITE_STONE: char = 'w';
-const POINT: char = '*';
+const POINT: char = '.';
 const BOARD_SIZE: usize = 16;
 const WIN_SERIAL_COUNT: i32 = 5;
 
@@ -33,9 +33,16 @@ impl Board {
     fn print(&self) {
         clear_screen();
         println!("Welcome to Gobang game!");
+        print!("   ");
         for i in 0..BOARD_SIZE {
+            print!("{:02} ", i);
+        }
+        print!("\n");
+
+        for i in 0..BOARD_SIZE {
+            print!("{:02} ", i);
             for j in 0..BOARD_SIZE {
-                print!("{} ", self.points[i][j]);
+                print!(" {} ", self.points[i][j]);
             }
             print!("\n");
         }
