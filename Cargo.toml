@@ -5,3 +5,9 @@ authors = ["ts25504 <ts25504@gmail.com>"]
 
 [dependencies]
 text_io = "0.1.5"
+
+[lib]
+name = "gobang"
+
+[[bin]]
+name = "gobang"
