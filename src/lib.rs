@@ -1,10 +1,12 @@
 #[macro_use]
 extern crate text_io;
+extern crate chrono;
 
 use std::process::Command;
 use std::fs::File;
 use std::path::Path;
 use std::io::prelude::*;
+use chrono::*;
 
 const BLACK_STONE: char = 'b';
 const WHITE_STONE: char = 'w';
@@ -206,12 +208,22 @@ impl ChessManual {
         self.steps.push(Step{ color: color, x: x, y: y });
     }
 
-    fn write_manual(&self) {
-        let path = Path::new("last_game_manual.txt");
+    fn write_manual(&self, winner: char) {
+        let dt = Local::now();
+        let filename = dt.format("%Y%m%d-%H%M").to_string() + "-game.txt";
+        let path = Path::new(&filename);
         let mut file = File::create(&path).unwrap();
         for step in &self.steps {
-            file.write_all(&mut step.to_string().as_bytes()).unwrap();
+            file.write_all(step.to_string().as_bytes()).unwrap();
         }
+        let win =
+            if winner == BLACK_STONE {
+                String::from("Black Win!")
+            } else {
+                String::from("White Win!")
+            };
+
+        file.write_all(win.as_bytes()).unwrap();
     }
 }
 
@@ -242,7 +254,7 @@ impl Game {
             self.manual.record_step(BLACK_STONE, bx, by);
 
             if self.board.win(bx, by) {
-                self.manual.write_manual();
+                self.manual.write_manual(BLACK_STONE);
                 println!("Black win!");
                 break;
             }
@@ -258,7 +270,7 @@ impl Game {
             self.manual.record_step(WHITE_STONE, wx, wy);
 
             if self.board.win(wx, wy) {
-                self.manual.write_manual();
+                self.manual.write_manual(WHITE_STONE);
                 println!("White win!");
                 break;
             }
