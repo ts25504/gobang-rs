@@ -2,6 +2,9 @@
 extern crate text_io;
 
 use std::process::Command;
+use std::fs::File;
+use std::path::Path;
+use std::io::prelude::*;
 
 const BLACK_STONE: char = 'b';
 const WHITE_STONE: char = 'w';
@@ -169,14 +172,59 @@ impl Board {
     }
 }
 
+struct Step {
+    color: char,
+    x: usize,
+    y: usize,
+}
+
+impl Step {
+    fn to_string(&self) -> String {
+        let color: String =
+            if self.color == BLACK_STONE {
+                String::from("Black")
+            } else {
+                String::from("White")
+            };
+
+        format!("{}: ({}, {})\n", color, self.x, self.y)
+    }
+}
+
+struct ChessManual {
+    steps: Vec<Step>,
+}
+
+impl ChessManual {
+    fn new() -> ChessManual {
+        ChessManual {
+            steps: Vec::new(),
+        }
+    }
+
+    fn record_step(&mut self, color: char, x: usize, y: usize) {
+        self.steps.push(Step{ color: color, x: x, y: y });
+    }
+
+    fn write_manual(&self) {
+        let path = Path::new("last_game_manual.txt");
+        let mut file = File::create(&path).unwrap();
+        for step in &self.steps {
+            file.write_all(&mut step.to_string().as_bytes()).unwrap();
+        }
+    }
+}
+
 pub struct Game {
     board: Board,
+    manual: ChessManual,
 }
 
 impl Game {
     pub fn new() -> Game {
         Game {
             board: Board::new(),
+            manual: ChessManual::new(),
         }
     }
 
@@ -191,8 +239,10 @@ impl Game {
                 by = y;
             }
             self.move_black(bx, by);
+            self.manual.record_step(BLACK_STONE, bx, by);
 
             if self.board.win(bx, by) {
+                self.manual.write_manual();
                 println!("Black win!");
                 break;
             }
@@ -205,8 +255,10 @@ impl Game {
                 wy = y;
             }
             self.move_white(wx, wy);
+            self.manual.record_step(WHITE_STONE, wx, wy);
 
             if self.board.win(wx, wy) {
+                self.manual.write_manual();
                 println!("White win!");
                 break;
             }
