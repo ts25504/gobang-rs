@@ -160,4 +160,3 @@ impl Board {
         self.points[x][y] != POINT
     }
 }
-

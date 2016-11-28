@@ -56,4 +56,3 @@ impl ChessManual {
         file.write_all(win.as_bytes()).unwrap();
     }
 }
-
