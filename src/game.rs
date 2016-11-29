@@ -1,3 +1,5 @@
+use std::io;
+use std::process::exit;
 use board::Board;
 use chessmanual::ChessManual;
 use common::*;
@@ -86,11 +88,20 @@ impl Game {
         let mut ux: usize = 0;
         let mut uy: usize = 0;
         loop {
-            let mut x = String::new();
-            let mut y = String::new();
+            let mut input = String::new();
 
+            println!("Input \"quit\" to quit this game");
             println!("Move(Format: x y):");
-            scan!("{} {}", x, y);
+            io::stdin().read_line(&mut input).expect("Failed to read line");
+            let mut split = input.split_whitespace();
+            let x = split.next().unwrap_or("Illegal input").to_string();
+            let y = split.next().unwrap_or("Illegal input").to_string();
+
+            if x == "quit".to_string() {
+                println!("Quit game");
+                exit(0);
+            }
+
             if self.is_coordinate_str_legal(&x, &y) {
                 ux = x.trim().parse::<usize>().unwrap();
                 uy = y.trim().parse::<usize>().unwrap();
