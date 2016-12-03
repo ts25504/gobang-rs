@@ -23,13 +23,13 @@ impl Step {
     }
 }
 
-pub struct ChessManual {
+pub struct Manual {
     steps: Vec<Step>,
 }
 
-impl ChessManual {
-    pub fn new() -> ChessManual {
-        ChessManual {
+impl Manual {
+    pub fn new() -> Manual {
+        Manual {
             steps: Vec::new(),
         }
     }

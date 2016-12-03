@@ -6,4 +6,4 @@ pub use game::Game;
 mod game;
 mod board;
 mod common;
-mod chessmanual;
+mod manual;

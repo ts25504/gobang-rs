@@ -1,19 +1,19 @@
 use std::io;
 use std::process::exit;
 use board::Board;
-use chessmanual::ChessManual;
+use manual::Manual;
 use common::*;
 
 pub struct Game {
     board: Board,
-    manual: ChessManual,
+    manual: Manual,
 }
 
 impl Game {
     pub fn new() -> Game {
         Game {
             board: Board::new(),
-            manual: ChessManual::new(),
+            manual: Manual::new(),
         }
     }
 
