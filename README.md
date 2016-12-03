@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/ts25504/gobang-rs.svg?branch=master)](https://travis-ci.org/ts25504/gobang-rs)
 
 ## Game
-
+```
 Welcome to Gobang game!
     A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
 15  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
@@ -21,7 +21,7 @@ Welcome to Gobang game!
 02  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
 01  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
 White win!
-
+```
 ## Record of a game
 
 20161203-1516-game.txt
@@ -59,3 +59,4 @@ White: L8
 Black: J6
 White: O11
 White Win!
+```
