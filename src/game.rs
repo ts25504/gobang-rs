@@ -57,54 +57,47 @@ impl Game {
     fn is_coordinate_str_legal(&self, x: &String, y: &String) -> bool {
         match x.trim().parse::<usize>() {
             Ok(u) => {
-                if u >= BOARD_SIZE {
-                    println!("error: overflow");
+                if u > BOARD_SIZE || u == 0 {
+                    println!("row error: overflow");
                     return false
                 }
             },
             Err(error) => {
-                println!("error: {}", error);
+                println!("row error: {}", error);
                 return false
             },
         }
 
-        match y.trim().parse::<usize>() {
-            Ok(u) => {
-                if u >= BOARD_SIZE {
-                    println!("error: overflow");
-                    return false
-                }
-            },
-            Err(error) => {
-                println!("error: {}", error);
-                return false
-            },
+        if y.as_bytes()[0] < 65 || y.as_bytes()[0] > (65 + BOARD_SIZE - 1) as u8 {
+            println!("column error: wrong column label");
+            return false;
         }
 
         true
     }
 
     fn input_coordinate(&self) -> (usize, usize) {
-        let mut ux: usize = 0;
-        let mut uy: usize = 0;
+        let ux: usize;
+        let uy: usize;
         loop {
             let mut input = String::new();
 
             println!("Input \"quit\" to quit this game");
-            println!("Move(Format: x y):");
+            println!("Move(Format like 'A19'):");
             io::stdin().read_line(&mut input).expect("Failed to read line");
-            let mut split = input.split_whitespace();
-            let x = split.next().unwrap_or("Illegal input").to_string();
-            let y = split.next().unwrap_or("Illegal input").to_string();
-
-            if x == "quit".to_string() {
+            if input == "quit".to_string() {
                 println!("Quit game");
                 exit(0);
             }
 
+            let (first, second) = input.split_at(1);
+            let y = first.to_string();
+            let x = second.to_string();
+
+
             if self.is_coordinate_str_legal(&x, &y) {
-                ux = x.trim().parse::<usize>().unwrap();
-                uy = y.trim().parse::<usize>().unwrap();
+                ux = BOARD_SIZE - x.trim().parse::<usize>().unwrap();
+                uy = (y.as_bytes()[0] - 65) as usize;
                 break;
             }
         }

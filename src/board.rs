@@ -27,12 +27,12 @@ impl Board {
         println!("Welcome to Gobang game!");
         print!("   ");
         for i in 0..BOARD_SIZE {
-            print!("{:02} ", i);
+            print!("{:>2} ", ((i+65) as u8) as char);
         }
         print!("\n");
 
         for i in 0..BOARD_SIZE {
-            print!("{:02} ", i);
+            print!("{:02} ", BOARD_SIZE - i);
             for j in 0..BOARD_SIZE {
                 print!(" {} ", self.points[i][j]);
             }

@@ -4,52 +4,58 @@
 ## Game
 
 Welcome to Gobang game!
-   00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18
-00  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-01  .  .  .  .  .  .  b  .  w  .  .  .  .  .  .  .  .  .  .
-02  .  .  .  .  .  .  w  w  .  .  .  .  .  .  .  .  .  .  .
-03  .  .  .  .  b  .  w  b  .  .  .  .  .  .  .  .  .  .  .
-04  .  .  .  .  b  w  w  w  b  .  .  .  .  .  .  .  .  .  .
-05  .  .  .  .  w  .  w  w  .  b  .  .  .  .  .  .  .  .  .
-06  .  .  .  .  .  b  b  w  .  .  b  .  .  .  .  .  .  .  .
-07  .  .  .  .  .  .  b  .  b  .  .  .  .  .  .  .  .  .  .
-08  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-09  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-10  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-11  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-12  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-13  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-14  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-15  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-16  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-17  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-18  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
+15  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+14  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+13  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+12  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+11  .  .  .  .  .  .  .  .  b  b  .  .  .  .  w
+10  .  .  .  .  .  .  .  .  .  .  w  w  b  w  w
+09  .  .  .  .  .  .  w  .  w  b  b  b  w  b  .
+08  .  .  .  .  .  .  w  b  w  b  b  w  b  .  .
+07  .  .  .  .  .  .  .  .  b  w  w  b  .  .  .
+06  .  .  .  .  .  .  .  b  .  b  b  .  w  .  .
+05  .  .  .  .  .  .  w  .  .  w  .  .  .  .  .
+04  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+03  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+02  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+01  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
 White win!
 
 ## Record of a game
 
-20161203-1234-game.txt
+20161203-1516-game.txt
 
-Black: (3, 4)
-White: (3, 6)
-Black: (4, 4)
-White: (2, 6)
-Black: (1, 6)
-White: (4, 5)
-Black: (3, 7)
-White: (5, 4)
-Black: (4, 8)
-White: (4, 6)
-Black: (6, 5)
-White: (5, 6)
-Black: (6, 6)
-White: (6, 7)
-Black: (7, 6)
-White: (5, 7)
-Black: (7, 8)
-White: (4, 7)
-Black: (5, 9)
-White: (2, 7)
-Black: (6, 10)
-White: (1, 8)
+Black: H8
+White: I9
+Black: I7
+White: G9
+Black: J8
+White: G8
+Black: J9
+White: J7
+Black: H6
+White: G5
+Black: K8
+White: I8
+Black: K9
+White: L10
+Black: K6
+White: K7
+Black: L7
+White: M6
+Black: M8
+White: J5
+Black: N9
+White: O10
+Black: L9
+White: M9
+Black: J11
+White: K10
+Black: I11
+White: N10
+Black: M10
+White: L8
+Black: J6
+White: O11
 White Win!

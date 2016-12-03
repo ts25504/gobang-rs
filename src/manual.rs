@@ -19,7 +19,9 @@ impl Step {
                 String::from("White")
             };
 
-        format!("{}: ({}, {})\n", color, self.x, self.y)
+        let row_label = BOARD_SIZE - self.x;
+        let col_label = ((self.y + 65) as u8) as char;
+        format!("{}: {}{}\n", color, col_label, row_label)
     }
 }
 
