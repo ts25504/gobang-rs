@@ -25,7 +25,7 @@ White win!
 ## Record of a game
 
 20161203-1516-game.txt
-
+```
 Black: H8
 White: I9
 Black: I7
