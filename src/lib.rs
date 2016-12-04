@@ -7,3 +7,4 @@ mod game;
 mod board;
 mod common;
 mod manual;
+mod archive;

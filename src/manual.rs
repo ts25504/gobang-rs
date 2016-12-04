@@ -2,6 +2,7 @@ use std::fs::File;
 use std::path::Path;
 use std::io::prelude::*;
 use chrono::*;
+use archive;
 use common::*;
 
 struct Step {
@@ -56,5 +57,12 @@ impl Manual {
             };
 
         file.write_all(win.as_bytes()).unwrap();
+    }
+
+    pub fn load_archive(&mut self, steps: &Vec<archive::Step>) {
+        self.steps.clear();
+        for step in steps {
+            self.steps.push(Step{ color: step.color, x: step.x, y: step.y });
+        }
     }
 }

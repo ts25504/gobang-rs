@@ -1,5 +1,6 @@
 use std::process::Command;
 use common::*;
+use archive::Step;
 
 fn clear_screen() {
     let mut child = Command::new("clear").spawn().unwrap();
@@ -46,6 +47,27 @@ impl Board {
 
     pub fn move_white(&mut self, x: usize, y: usize) {
         self.points[x][y] = WHITE_STONE;
+    }
+
+    fn clear(&mut self) {
+        for i in 0..BOARD_SIZE {
+            for j in 0..BOARD_SIZE {
+                self.points[i][j] = POINT;
+            }
+        }
+    }
+
+    pub fn load_archive(&mut self, steps: &Vec<Step>) {
+        self.clear();
+        for step in steps {
+            if step.color == 'b' {
+                self.move_black(step.x, step.y);
+            } else if step.color == 'w' {
+                self.move_white(step.x, step.y);
+            }
+        }
+        self.print();
+        println!("Load successl!");
     }
 
     pub fn win(&self, x: usize, y: usize) -> bool {
