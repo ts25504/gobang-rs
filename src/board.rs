@@ -8,19 +8,13 @@ fn clear_screen() {
 }
 
 pub struct Board {
-    points: Vec<Vec<char>>,
+    points: Vec<Vec<StoneType>>,
 }
 
 impl Board {
     pub fn new() -> Board {
-        let mut board = Board { points: Vec::new() };
-        for i in 0..BOARD_SIZE {
-            board.points.push(Vec::new());
-            for _ in 0..BOARD_SIZE {
-                board.points[i].push(POINT);
-            }
-        }
-        board
+        let v = vec![vec![StoneType::None;BOARD_SIZE];BOARD_SIZE];
+        Board { points: v }
     }
 
     pub fn print(&self) {
@@ -35,24 +29,24 @@ impl Board {
         for i in 0..BOARD_SIZE {
             print!("{:02} ", BOARD_SIZE - i);
             for j in 0..BOARD_SIZE {
-                print!(" {} ", self.points[i][j]);
+                print!(" {} ", self.points[i][j].as_char());
             }
             print!("\n");
         }
     }
 
     pub fn move_black(&mut self, x: usize, y: usize) {
-        self.points[x][y] = BLACK_STONE;
+        self.points[x][y] = StoneType::Black;
     }
 
     pub fn move_white(&mut self, x: usize, y: usize) {
-        self.points[x][y] = WHITE_STONE;
+        self.points[x][y] = StoneType::White;
     }
 
     fn clear(&mut self) {
         for i in 0..BOARD_SIZE {
             for j in 0..BOARD_SIZE {
-                self.points[i][j] = POINT;
+                self.points[i][j] = StoneType::None;
             }
         }
     }
@@ -60,10 +54,10 @@ impl Board {
     pub fn load_archive(&mut self, steps: &Vec<Step>) {
         self.clear();
         for step in steps {
-            if step.color == 'b' {
-                self.move_black(step.x, step.y);
-            } else if step.color == 'w' {
-                self.move_white(step.x, step.y);
+            match step.color {
+                StoneType::Black => self.move_black(step.x, step.y),
+                StoneType::White => self.move_white(step.x, step.y),
+                StoneType::None => println!("Wrong step"),
             }
         }
         self.print();
@@ -71,12 +65,15 @@ impl Board {
     }
 
     pub fn win(&self, x: usize, y: usize) -> bool {
-        self.win_horizontal(x, y) || self.win_vertical(x, y) || self.win_diagonal_a(x, y) || self.win_diagonal_b(x, y)
+        self.win_horizontal(x, y)
+            || self.win_vertical(x, y)
+            || self.win_diagonal_a(x, y)
+            || self.win_diagonal_b(x, y)
     }
 
     pub fn win_horizontal(&self, x: usize, y: usize) -> bool {
         let mut serial_count: i32 = 1;
-        let color: char = self.points[x][y];
+        let color: StoneType = self.points[x][y];
         let mut inc: usize = 0;
 
         let mut east: bool = true;
@@ -102,7 +99,7 @@ impl Board {
 
     fn win_vertical(&self, x: usize, y: usize) -> bool {
         let mut serial_count: i32 = 1;
-        let color: char = self.points[x][y];
+        let color: StoneType = self.points[x][y];
         let mut inc: usize = 0;
 
         let mut north: bool = true;
@@ -128,7 +125,7 @@ impl Board {
 
     fn win_diagonal_a(&self, x: usize, y: usize) -> bool {
         let mut serial_count: i32 = 1;
-        let color: char = self.points[x][y];
+        let color: StoneType = self.points[x][y];
         let mut inc: usize = 0;
 
         let mut northeast: bool = true;
@@ -136,17 +133,19 @@ impl Board {
         while northeast || southwest {
             inc += 1;
 
-            if x >= inc && y + inc < BOARD_SIZE && self.points[x-inc][y+inc] == color {
-                serial_count += 1;
-            } else {
-                northeast = false;
-            }
+            if x >= inc && y + inc < BOARD_SIZE &&
+                self.points[x-inc][y+inc] == color {
+                    serial_count += 1;
+                } else {
+                    northeast = false;
+                }
 
-            if y >= inc && x + inc < BOARD_SIZE && self.points[x+inc][y-inc] == color {
-                serial_count += 1;
-            } else {
-                southwest = false;
-            }
+            if y >= inc && x + inc < BOARD_SIZE &&
+                self.points[x+inc][y-inc] == color {
+                    serial_count += 1;
+                } else {
+                    southwest = false;
+                }
         }
 
         serial_count == WIN_SERIAL_COUNT
@@ -154,7 +153,7 @@ impl Board {
 
     fn win_diagonal_b(&self, x: usize, y: usize) -> bool {
         let mut serial_count: i32 = 1;
-        let color: char = self.points[x][y];
+        let color: StoneType = self.points[x][y];
         let mut inc: usize = 0;
 
         let mut northwest: bool = true;
@@ -168,17 +167,18 @@ impl Board {
                 northwest = false;
             }
 
-            if x + inc < BOARD_SIZE && y + inc < BOARD_SIZE && self.points[x+inc][y+inc] == color {
-                serial_count += 1;
-            } else {
-                southeast = false;
-            }
+            if x + inc < BOARD_SIZE && y + inc < BOARD_SIZE &&
+                self.points[x+inc][y+inc] == color {
+                    serial_count += 1;
+                } else {
+                    southeast = false;
+                }
         }
 
         serial_count == WIN_SERIAL_COUNT
     }
 
     pub fn has_stone(&self, x: usize, y: usize)  -> bool {
-        self.points[x][y] != POINT
+        self.points[x][y] != StoneType::None
     }
 }

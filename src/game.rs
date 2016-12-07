@@ -31,11 +31,11 @@ impl Game {
                 by = y;
             }
             self.move_black(bx, by);
-            self.manual.record_step(BLACK_STONE, bx, by);
-            self.archive.record_step(BLACK_STONE, bx, by);
+            self.manual.record_step(StoneType::Black, bx, by);
+            self.archive.record_step(StoneType::Black, bx, by);
 
             if self.board.win(bx, by) {
-                self.manual.write_manual(BLACK_STONE);
+                self.manual.write_manual(StoneType::Black);
                 println!("Black win!");
                 break;
             }
@@ -48,11 +48,11 @@ impl Game {
                 wy = y;
             }
             self.move_white(wx, wy);
-            self.manual.record_step(WHITE_STONE, wx, wy);
-            self.archive.record_step(WHITE_STONE, wx, wy);
+            self.manual.record_step(StoneType::White, wx, wy);
+            self.archive.record_step(StoneType::White, wx, wy);
 
             if self.board.win(wx, wy) {
-                self.manual.write_manual(WHITE_STONE);
+                self.manual.write_manual(StoneType::White);
                 println!("White win!");
                 break;
             }

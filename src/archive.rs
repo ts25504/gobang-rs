@@ -4,16 +4,17 @@ use std::io::prelude::*;
 use std::io::BufReader;
 use std::error::Error;
 use chrono::*;
+use common::*;
 
 pub struct Step {
-    pub color: char,
+    pub color: StoneType,
     pub x: usize,
     pub y: usize,
 }
 
 impl Step {
     fn to_string(&self) -> String {
-        format!("{} {} {}\n", self.color, self.x, self.y)
+        format!("{} {} {}\n", self.color.as_char(), self.x, self.y)
     }
 }
 
@@ -28,7 +29,7 @@ impl Archive {
         }
     }
 
-    pub fn record_step(&mut self, color: char, x: usize, y: usize) {
+    pub fn record_step(&mut self, color: StoneType, x: usize, y: usize) {
         self.steps.push(Step{ color: color, x: x, y: y});
     }
 
@@ -56,7 +57,8 @@ impl Archive {
         for line in buffer.lines().filter_map(|result| result.ok()) {
             let mut elems = line.split_whitespace();
             let step = Step {
-                color: elems.next().unwrap().chars().next().unwrap(),
+                color: char_to_stonetype(
+                           elems.next().unwrap().chars().next().unwrap()),
                 x: elems.next().unwrap().trim().parse::<usize>().unwrap(),
                 y: elems.next().unwrap().trim().parse::<usize>().unwrap()
             };

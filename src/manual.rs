@@ -6,7 +6,7 @@ use archive;
 use common::*;
 
 struct Step {
-    color: char,
+    color: StoneType,
     x: usize,
     y: usize,
 }
@@ -14,10 +14,10 @@ struct Step {
 impl Step {
     fn to_string(&self) -> String {
         let color: String =
-            if self.color == BLACK_STONE {
-                String::from("Black")
-            } else {
-                String::from("White")
+            match self.color {
+                StoneType::Black => String::from("Black"),
+                StoneType::White => String::from("White"),
+                StoneType::None => String::from("Error"),
             };
 
         let row_label = BOARD_SIZE - self.x;
@@ -37,11 +37,11 @@ impl Manual {
         }
     }
 
-    pub fn record_step(&mut self, color: char, x: usize, y: usize) {
+    pub fn record_step(&mut self, color: StoneType, x: usize, y: usize) {
         self.steps.push(Step{ color: color, x: x, y: y });
     }
 
-    pub fn write_manual(&self, winner: char) {
+    pub fn write_manual(&self, winner: StoneType) {
         let dt = Local::now();
         let filename = dt.format("%Y%m%d-%H%M").to_string() + "-game.txt";
         let path = Path::new(&filename);
@@ -50,10 +50,10 @@ impl Manual {
             file.write_all(step.to_string().as_bytes()).unwrap();
         }
         let win =
-            if winner == BLACK_STONE {
-                String::from("Black Win!")
-            } else {
-                String::from("White Win!")
+            match winner {
+                StoneType::Black => String::from("Black Win!"),
+                StoneType::White => String::from("White Win!"),
+                StoneType::None => String::from("No winner"),
             };
 
         file.write_all(win.as_bytes()).unwrap();
