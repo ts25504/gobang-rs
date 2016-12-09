@@ -61,7 +61,7 @@ impl Board {
             }
         }
         self.print();
-        println!("Load successl!");
+        println!("Load success!");
     }
 
     pub fn win(&self, x: usize, y: usize) -> bool {
