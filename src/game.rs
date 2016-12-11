@@ -115,9 +115,9 @@ impl Game {
 
             let (first, second) = input.split_at(1);
 
-            if self.is_coordinate_str_legal(first, second) {
-                ux = BOARD_SIZE - first.trim().parse::<usize>().unwrap();
-                uy = (second.as_bytes()[0] - 65) as usize;
+            if self.is_coordinate_str_legal(second, first) {
+                ux = BOARD_SIZE - second.trim().parse::<usize>().unwrap();
+                uy = (first.as_bytes()[0] - 65) as usize;
                 break;
             }
         }
