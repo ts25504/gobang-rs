@@ -99,16 +99,26 @@ impl Game {
             }
 
             if input == "save\n".to_string() {
-                println!("Save game");
-                self.archive.save_archive();
+                match self.archive.save_archive() {
+                    Ok(_) => println!("Save game success"),
+                    Err(_) => println!("Save game fail"),
+                };
                 continue;
             }
 
             if input.contains("load") {
                 let split = input.split_whitespace();
                 let filename = split.last().unwrap();
-                println!("Load game {}", filename);
-                let steps = self.archive.load_archive(filename.to_string());
+                let steps = match self.archive.load_archive(filename) {
+                    Some(steps) => {
+                        println!("Load game {} success", filename);
+                        steps
+                    },
+                    None => {
+                        println!("Load game {} fail", filename);
+                        continue;
+                    },
+                };
                 self.board.load_archive(steps);
                 self.manual.load_archive(steps);
             }

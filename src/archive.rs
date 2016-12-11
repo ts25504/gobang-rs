@@ -2,7 +2,7 @@ use std::fs::File;
 use std::path::Path;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::error::Error;
+use std::io::Error;
 use chrono::*;
 use common::*;
 
@@ -33,22 +33,21 @@ impl Archive {
         self.steps.push(Step{ color: color, x: x, y: y});
     }
 
-    pub fn save_archive(&mut self) {
+    pub fn save_archive(&mut self) -> Result<(), Error> {
         let dt = Local::now();
         let filename = dt.format("%Y%m%d-%H%M").to_string() + "-archive.txt";
         let path = Path::new(&filename);
-        let mut file = File::create(&path).unwrap();
+        let mut file = try!(File::create(&path));
         for step in &self.steps {
-            file.write_all(step.to_string().as_bytes()).unwrap();
+            try!(file.write_all(step.to_string().as_bytes()));
         }
+        Ok(())
     }
 
-    pub fn load_archive(&mut self, filename: String) -> &Vec<Step> {
-        let path = Path::new(&filename);
+    pub fn load_archive(&mut self, filename: &str) -> Option<&Vec<Step>> {
+        let path = Path::new(filename);
         let file = match File::open(&path) {
-            Err(why) => panic!("couldn't read {}: {}",
-                               path.display(),
-                               why.description()),
+            Err(_) => return None,
             Ok(file) => file,
         };
 
@@ -65,6 +64,6 @@ impl Archive {
             self.steps.push(step);
         }
 
-        &self.steps
+        Some(&self.steps)
     }
 }
