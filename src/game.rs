@@ -59,7 +59,7 @@ impl Game {
         }
     }
 
-    fn is_coordinate_str_legal(&self, x: &String, y: &String) -> bool {
+    fn is_coordinate_str_legal(&self, x: &str, y: &str) -> bool {
         match x.trim().parse::<usize>() {
             Ok(u) => {
                 if u > BOARD_SIZE || u == 0 {
@@ -114,12 +114,10 @@ impl Game {
             }
 
             let (first, second) = input.split_at(1);
-            let y = first.to_string();
-            let x = second.to_string();
 
-            if self.is_coordinate_str_legal(&x, &y) {
-                ux = BOARD_SIZE - x.trim().parse::<usize>().unwrap();
-                uy = (y.as_bytes()[0] - 65) as usize;
+            if self.is_coordinate_str_legal(first, second) {
+                ux = BOARD_SIZE - first.trim().parse::<usize>().unwrap();
+                uy = (second.as_bytes()[0] - 65) as usize;
                 break;
             }
         }
