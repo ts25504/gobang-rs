@@ -38,7 +38,7 @@ impl Game {
                 println!("Black win!");
                 match self.manual.write_manual(StoneType::Black) {
                     Ok(_) => println!("Save manual success"),
-                    Err(err) => println!("Save manual fail: err"),
+                    Err(err) => println!("Save manual fail: {}", err),
                 }
                 break;
             }
@@ -58,7 +58,7 @@ impl Game {
                 println!("White win!");
                 match self.manual.write_manual(StoneType::White) {
                     Ok(_) => println!("Save manual success"),
-                    Err(err) => println!("Save manual fail: err"),
+                    Err(err) => println!("Save manual fail: {}", err),
                 }
                 break;
             }

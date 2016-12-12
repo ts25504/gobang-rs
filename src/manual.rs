@@ -58,6 +58,7 @@ impl Manual {
             };
 
         try!(file.write_all(win.as_bytes()));
+        Ok(())
     }
 
     pub fn load_archive(&mut self, steps: &Vec<archive::Step>) {
