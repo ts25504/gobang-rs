@@ -2,9 +2,9 @@ use std::fs::File;
 use std::path::Path;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::io::Error;
 use chrono::*;
 use common::*;
+use errors::Error;
 
 pub struct Step {
     pub color: StoneType,
@@ -44,12 +44,9 @@ impl Archive {
         Ok(())
     }
 
-    pub fn load_archive(&mut self, filename: &str) -> Option<&Vec<Step>> {
+    pub fn load_archive(&mut self, filename: &str) -> Result<&Vec<Step>, Error> {
         let path = Path::new(filename);
-        let file = match File::open(&path) {
-            Err(_) => return None,
-            Ok(file) => file,
-        };
+        let file = try!(File::open(&path));
 
         self.steps.clear();
         let buffer = BufReader::new(file);
@@ -64,6 +61,6 @@ impl Archive {
             self.steps.push(step);
         }
 
-        Some(&self.steps)
+        Ok(&self.steps)
     }
 }

@@ -4,6 +4,7 @@ use std::io::prelude::*;
 use chrono::*;
 use archive;
 use common::*;
+use errors::*;
 
 struct Step {
     color: StoneType,
@@ -41,13 +42,13 @@ impl Manual {
         self.steps.push(Step{ color: color, x: x, y: y });
     }
 
-    pub fn write_manual(&self, winner: StoneType) {
+    pub fn write_manual(&self, winner: StoneType) -> Result<(), Error> {
         let dt = Local::now();
         let filename = dt.format("%Y%m%d-%H%M").to_string() + "-game.txt";
         let path = Path::new(&filename);
-        let mut file = File::create(&path).unwrap();
+        let mut file = try!(File::create(&path));
         for step in &self.steps {
-            file.write_all(step.to_string().as_bytes()).unwrap();
+            try!(file.write_all(step.to_string().as_bytes()));
         }
         let win =
             match winner {
@@ -56,7 +57,7 @@ impl Manual {
                 StoneType::None => String::from("No winner"),
             };
 
-        file.write_all(win.as_bytes()).unwrap();
+        try!(file.write_all(win.as_bytes()));
     }
 
     pub fn load_archive(&mut self, steps: &Vec<archive::Step>) {

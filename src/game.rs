@@ -35,8 +35,11 @@ impl Game {
             self.archive.record_step(StoneType::Black, bx, by);
 
             if self.board.win(bx, by) {
-                self.manual.write_manual(StoneType::Black);
                 println!("Black win!");
+                match self.manual.write_manual(StoneType::Black) {
+                    Ok(_) => println!("Save manual success"),
+                    Err(err) => println!("Save manual fail: err"),
+                }
                 break;
             }
 
@@ -52,8 +55,11 @@ impl Game {
             self.archive.record_step(StoneType::White, wx, wy);
 
             if self.board.win(wx, wy) {
-                self.manual.write_manual(StoneType::White);
                 println!("White win!");
+                match self.manual.write_manual(StoneType::White) {
+                    Ok(_) => println!("Save manual success"),
+                    Err(err) => println!("Save manual fail: err"),
+                }
                 break;
             }
         }
@@ -101,7 +107,7 @@ impl Game {
             if input == "save\n".to_string() {
                 match self.archive.save_archive() {
                     Ok(_) => println!("Save game success"),
-                    Err(_) => println!("Save game fail"),
+                    Err(err) => println!("Save game fail: {}", err),
                 };
                 continue;
             }
@@ -110,12 +116,12 @@ impl Game {
                 let split = input.split_whitespace();
                 let filename = split.last().unwrap();
                 let steps = match self.archive.load_archive(filename) {
-                    Some(steps) => {
+                    Ok(steps) => {
                         println!("Load game {} success", filename);
                         steps
                     },
-                    None => {
-                        println!("Load game {} fail", filename);
+                    Err(err) => {
+                        println!("Load game {} fail: {}", filename, err);
                         continue;
                     },
                 };
