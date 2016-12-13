@@ -71,7 +71,7 @@ impl Board {
             || self.win_diagonal_b(x, y)
     }
 
-    pub fn win_horizontal(&self, x: usize, y: usize) -> bool {
+    fn win_horizontal(&self, x: usize, y: usize) -> bool {
         let mut serial_count: i32 = 1;
         let color: StoneType = self.points[x][y];
         let mut inc: usize = 0;
@@ -178,7 +178,62 @@ impl Board {
         serial_count == WIN_SERIAL_COUNT
     }
 
-    pub fn has_stone(&self, x: usize, y: usize)  -> bool {
+    pub fn has_stone(&self, x: usize, y: usize) -> bool {
         self.points[x][y] != StoneType::None
     }
+}
+
+#[test]
+fn win_horizontal() {
+    let mut board = Board::new();
+    board.move_black(0, 0);
+    board.move_black(0, 1);
+    board.move_black(0, 2);
+    board.move_black(0, 3);
+    board.move_black(0, 4);
+    assert!(board.win_horizontal(0, 4));
+}
+
+#[test]
+fn test_win_vertical() {
+    let mut board = Board::new();
+    board.move_black(0, 0);
+    board.move_black(1, 0);
+    board.move_black(2, 0);
+    board.move_black(3, 0);
+    board.move_black(4, 0);
+    assert!(board.win_vertical(4, 0));
+}
+
+#[test]
+fn test_win_digonal_a() {
+    let mut board = Board::new();
+    board.move_black(0, 4);
+    board.move_black(1, 3);
+    board.move_black(2, 2);
+    board.move_black(3, 1);
+    board.move_black(4, 0);
+    assert!(board.win_diagonal_a(4, 0));
+}
+
+#[test]
+fn test_win_digonal_b() {
+    let mut board = Board::new();
+    board.move_black(0, 0);
+    board.move_black(1, 1);
+    board.move_black(2, 2);
+    board.move_black(3, 3);
+    board.move_black(4, 4);
+    assert!(board.win_diagonal_b(4, 4));
+}
+
+#[test]
+fn test_move() {
+    let mut board = Board::new();
+    board.move_black(0, 0);
+    assert!(!board.has_stone(1, 1));
+    assert!(board.has_stone(0, 0));
+    board.move_white(1, 1);
+    assert!(board.has_stone(1, 1));
+    assert!(board.has_stone(0, 0));
 }

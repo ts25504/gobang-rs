@@ -42,7 +42,7 @@ impl Manual {
         self.steps.push(Step{ color: color, x: x, y: y });
     }
 
-    pub fn write_manual(&self, winner: StoneType) -> Result<(), Error> {
+    pub fn write_manual(&self, winner: StoneType) -> Result<String, Error> {
         let dt = Local::now();
         let filename = dt.format("%Y%m%d-%H%M").to_string() + "-game.txt";
         let path = Path::new(&filename);
@@ -58,7 +58,7 @@ impl Manual {
             };
 
         try!(file.write_all(win.as_bytes()));
-        Ok(())
+        Ok(path.to_str().unwrap().to_string())
     }
 
     pub fn load_archive(&mut self, steps: &Vec<archive::Step>) {

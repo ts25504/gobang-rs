@@ -33,7 +33,7 @@ impl Archive {
         self.steps.push(Step{ color: color, x: x, y: y});
     }
 
-    pub fn save_archive(&mut self) -> Result<(), Error> {
+    pub fn save_archive(&mut self) -> Result<String, Error> {
         let dt = Local::now();
         let filename = dt.format("%Y%m%d-%H%M").to_string() + "-archive.txt";
         let path = Path::new(&filename);
@@ -41,7 +41,7 @@ impl Archive {
         for step in &self.steps {
             try!(file.write_all(step.to_string().as_bytes()));
         }
-        Ok(())
+        Ok(path.to_str().unwrap().to_string())
     }
 
     pub fn load_archive(&mut self, filename: &str) -> Result<&Vec<Step>, Error> {
@@ -67,4 +67,20 @@ impl Archive {
 
         Ok(&self.steps)
     }
+}
+
+#[test]
+fn test_archive() {
+    let mut archive = Archive::new();
+    archive.record_step(StoneType::Black, 0, 0);
+    archive.record_step(StoneType::White, 1, 1);
+    let path = archive.save_archive().unwrap();
+    let steps = archive.load_archive(&path).unwrap();
+    assert_eq!(steps.len(), 2);
+    assert_eq!(steps[0].color, StoneType::Black);
+    assert_eq!(steps[0].x, 0);
+    assert_eq!(steps[0].y, 0);
+    assert_eq!(steps[1].color, StoneType::White);
+    assert_eq!(steps[1].x, 1);
+    assert_eq!(steps[1].y, 1);
 }
