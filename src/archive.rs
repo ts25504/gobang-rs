@@ -52,10 +52,10 @@ impl Archive {
         let buffer = BufReader::new(file);
         for line in buffer.lines().filter_map(|result| result.ok()) {
             let mut elems = line.split_whitespace();
-            let s = try!(elems.next().ok_or(Error::ArchiveParseError));
-            let color = try!(s.chars().next().ok_or(Error::ArchiveParseError));
-            let x = try!(elems.next().ok_or(Error::ArchiveParseError));
-            let y = try!(elems.next().ok_or(Error::ArchiveParseError));
+            let s = try!(elems.next().ok_or(Error::ArchiveParse));
+            let color = try!(s.chars().next().ok_or(Error::ArchiveParse));
+            let x = try!(elems.next().ok_or(Error::ArchiveParse));
+            let y = try!(elems.next().ok_or(Error::ArchiveParse));
 
             let step = Step {
                 color: char_to_stonetype(color),

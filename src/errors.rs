@@ -4,7 +4,7 @@ use std::num::ParseIntError;
 quick_error! {
     #[derive(Debug)]
     pub enum Error {
-        ArchiveParseError {
+        ArchiveParse {
             description("Illegal archive format")
             display("Illegal archive format")
         }
