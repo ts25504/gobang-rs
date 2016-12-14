@@ -68,3 +68,49 @@ impl Manual {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_step() {
+        let step1 = Step{ color: StoneType::Black, x: 0, y: 0};
+        assert_eq!(step1.to_string(), "Black: A15\n".to_string());
+        let step2 = Step{ color: StoneType::White, x: 1, y: 1};
+        assert_eq!(step2.to_string(), "White: B14\n".to_string());
+        let step3 = Step{ color: StoneType::None, x: 2, y: 2};
+        assert_eq!(step3.to_string(), "Error: C13\n".to_string());
+    }
+
+    #[test]
+    fn test_record_step() {
+        let mut manual = Manual::new();
+        manual.record_step(StoneType::Black, 0, 0);
+        manual.record_step(StoneType::White, 1, 1);
+        assert_eq!(manual.steps[0].color, StoneType::Black);
+        assert_eq!(manual.steps[0].x, 0);
+        assert_eq!(manual.steps[0].y, 0);
+
+        assert_eq!(manual.steps[1].color, StoneType::White);
+        assert_eq!(manual.steps[1].x, 1);
+        assert_eq!(manual.steps[1].y, 1);
+    }
+
+    #[test]
+    fn test_load_archive() {
+        let mut manual = Manual::new();
+        let mut archive = archive::Archive::new();
+        archive.record_step(StoneType::Black, 0, 0);
+        archive.record_step(StoneType::White, 1, 1);
+        manual.load_archive(&archive.get_steps());
+
+        assert_eq!(manual.steps.len(), 2);
+        assert_eq!(manual.steps[0].color, StoneType::Black);
+        assert_eq!(manual.steps[0].x, 0);
+        assert_eq!(manual.steps[0].y, 0);
+        assert_eq!(manual.steps[1].color, StoneType::White);
+        assert_eq!(manual.steps[1].x, 1);
+        assert_eq!(manual.steps[1].y, 1);
+    }
+}

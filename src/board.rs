@@ -194,46 +194,51 @@ fn win_horizontal() {
     assert!(board.win_horizontal(0, 4));
 }
 
-#[test]
-fn test_win_vertical() {
-    let mut board = Board::new();
-    board.move_black(0, 0);
-    board.move_black(1, 0);
-    board.move_black(2, 0);
-    board.move_black(3, 0);
-    board.move_black(4, 0);
-    assert!(board.win_vertical(4, 0));
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test]
-fn test_win_digonal_a() {
-    let mut board = Board::new();
-    board.move_black(0, 4);
-    board.move_black(1, 3);
-    board.move_black(2, 2);
-    board.move_black(3, 1);
-    board.move_black(4, 0);
-    assert!(board.win_diagonal_a(4, 0));
-}
+    #[test]
+    fn test_win_vertical() {
+        let mut board = Board::new();
+        board.move_black(0, 0);
+        board.move_black(1, 0);
+        board.move_black(2, 0);
+        board.move_black(3, 0);
+        board.move_black(4, 0);
+        assert!(board.win_vertical(4, 0));
+    }
 
-#[test]
-fn test_win_digonal_b() {
-    let mut board = Board::new();
-    board.move_black(0, 0);
-    board.move_black(1, 1);
-    board.move_black(2, 2);
-    board.move_black(3, 3);
-    board.move_black(4, 4);
-    assert!(board.win_diagonal_b(4, 4));
-}
+    #[test]
+    fn test_win_digonal_a() {
+        let mut board = Board::new();
+        board.move_black(0, 4);
+        board.move_black(1, 3);
+        board.move_black(2, 2);
+        board.move_black(3, 1);
+        board.move_black(4, 0);
+        assert!(board.win_diagonal_a(4, 0));
+    }
 
-#[test]
-fn test_move() {
-    let mut board = Board::new();
-    board.move_black(0, 0);
-    assert!(!board.has_stone(1, 1));
-    assert!(board.has_stone(0, 0));
-    board.move_white(1, 1);
-    assert!(board.has_stone(1, 1));
-    assert!(board.has_stone(0, 0));
+    #[test]
+    fn test_win_digonal_b() {
+        let mut board = Board::new();
+        board.move_black(0, 0);
+        board.move_black(1, 1);
+        board.move_black(2, 2);
+        board.move_black(3, 3);
+        board.move_black(4, 4);
+        assert!(board.win_diagonal_b(4, 4));
+    }
+
+    #[test]
+    fn test_move() {
+        let mut board = Board::new();
+        board.move_black(0, 0);
+        assert!(!board.has_stone(1, 1));
+        assert!(board.has_stone(0, 0));
+        board.move_white(1, 1);
+        assert!(board.has_stone(1, 1));
+        assert!(board.has_stone(0, 0));
+    }
 }
