@@ -72,15 +72,22 @@ impl Archive {
 #[test]
 fn test_archive() {
     let mut archive = Archive::new();
-    archive.record_step(StoneType::Black, 0, 0);
-    archive.record_step(StoneType::White, 1, 1);
-    let path = archive.save_archive().unwrap();
-    let steps = archive.load_archive(&path).unwrap();
-    assert_eq!(steps.len(), 2);
-    assert_eq!(steps[0].color, StoneType::Black);
-    assert_eq!(steps[0].x, 0);
-    assert_eq!(steps[0].y, 0);
-    assert_eq!(steps[1].color, StoneType::White);
-    assert_eq!(steps[1].x, 1);
-    assert_eq!(steps[1].y, 1);
+    {
+        let mut_ref_1 = &mut archive;
+        mut_ref_1.record_step(StoneType::Black, 0, 0);
+        mut_ref_1.record_step(StoneType::White, 1, 1);
+        let path = mut_ref_1.save_archive().unwrap();
+        let steps = mut_ref_1.load_archive(&path).unwrap();
+        assert_eq!(steps.len(), 2);
+        assert_eq!(steps[0].color, StoneType::Black);
+        assert_eq!(steps[0].x, 0);
+        assert_eq!(steps[0].y, 0);
+        assert_eq!(steps[1].color, StoneType::White);
+        assert_eq!(steps[1].x, 1);
+        assert_eq!(steps[1].y, 1);
+    }
+    {
+        let mut_ref_2 = &mut archive;
+        assert!(mut_ref_2.load_archive("unknown_file_path").is_err());
+    }
 }
