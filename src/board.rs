@@ -24,14 +24,14 @@ impl Board {
         for i in 0..BOARD_SIZE {
             print!("{:>2} ", ((i+65) as u8) as char);
         }
-        print!("\n");
+        println!();
 
         for i in 0..BOARD_SIZE {
             print!("{:02} ", BOARD_SIZE - i);
             for j in 0..BOARD_SIZE {
                 print!(" {} ", self.points[i][j].as_char());
             }
-            print!("\n");
+            println!();
         }
     }
 
@@ -51,7 +51,7 @@ impl Board {
         }
     }
 
-    pub fn load_archive(&mut self, steps: &Vec<Step>) {
+    pub fn load_archive(&mut self, steps: &[Step]) {
         self.clear();
         for step in steps {
             match step.color {

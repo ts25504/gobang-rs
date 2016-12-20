@@ -10,10 +10,10 @@ pub enum StoneType {
 
 impl StoneType {
     pub fn as_char(&self) -> char {
-        match self {
-            &StoneType::None => '.',
-            &StoneType::Black => 'b',
-            &StoneType::White => 'w',
+        match *self {
+            StoneType::None => '.',
+            StoneType::Black => 'b',
+            StoneType::White => 'w',
         }
     }
 }

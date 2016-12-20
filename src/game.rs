@@ -11,8 +11,14 @@ pub struct Game {
     archive: Archive,
 }
 
+impl Default for Game {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Game {
-    pub fn new() -> Game {
+    fn new() -> Game {
         Game {
             board: Board::new(),
             manual: Manual::new(),
@@ -99,12 +105,12 @@ impl Game {
             println!("\nMove(Format like 'A15'):");
             io::stdin().read_line(&mut input).expect("Failed to read line");
 
-            if input == "quit\n".to_string() {
+            if input == "quit\n" {
                 println!("Quit game");
                 exit(0);
             }
 
-            if input == "save\n".to_string() {
+            if input == "save\n" {
                 match self.archive.save_archive() {
                     Ok(_) => println!("Save game success"),
                     Err(err) => println!("Save game fail: {}", err),

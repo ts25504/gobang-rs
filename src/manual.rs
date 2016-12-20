@@ -61,7 +61,7 @@ impl Manual {
         Ok(path.to_str().unwrap().to_string())
     }
 
-    pub fn load_archive(&mut self, steps: &Vec<archive::Step>) {
+    pub fn load_archive(&mut self, steps: &[archive::Step]) {
         self.steps.clear();
         for step in steps {
             self.steps.push(Step{ color: step.color, x: step.x, y: step.y });
