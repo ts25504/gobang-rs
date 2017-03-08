@@ -183,20 +183,20 @@ impl Board {
     }
 }
 
-#[test]
-fn win_horizontal() {
-    let mut board = Board::new();
-    board.move_black(0, 0);
-    board.move_black(0, 1);
-    board.move_black(0, 2);
-    board.move_black(0, 3);
-    board.move_black(0, 4);
-    assert!(board.win_horizontal(0, 4));
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_win_horizontal() {
+        let mut board = Board::new();
+        board.move_black(0, 0);
+        board.move_black(0, 1);
+        board.move_black(0, 2);
+        board.move_black(0, 3);
+        board.move_black(0, 4);
+        assert!(board.win_horizontal(0, 4));
+    }
 
     #[test]
     fn test_win_vertical() {

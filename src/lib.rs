@@ -6,7 +6,6 @@
 
 #![warn(non_camel_case_types)]
 
-#[macro_use]
 extern crate chrono;
 
 #[macro_use(quick_error)]
