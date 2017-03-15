@@ -4,7 +4,6 @@ version = "0.3.0"
 authors = ["ts25504 <ts25504@gmail.com>"]
 
 [dependencies]
-text_io = "0.1.5"
 chrono = "0.2"
 clippy = {version = "*", optional = true}
 quick-error = "1.1.0"
